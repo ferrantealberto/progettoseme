@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benvenuto</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .welcome-container {
+      padding: 20px;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .cta-button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .cta-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    .qr-container {
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .info-box {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .visitor-counter {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    /* Centratura del widget reCAPTCHA */
+    .g-recaptcha {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 20px;
+      width: fit-content;
+    }
+
+    /* Popup Cookie */
+    .cookie-popup {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1000;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .cookie-popup.active {
+      display: block;
+    }
+
+    .cookie-popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .cookie-popup .close-btn:hover {
+      color: #000;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    .cookie-button {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 1001;
+    }
+
+    .cookie-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .cta-button {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+      }
+
+      .info-box {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+      }
+
+      .visitor-counter {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+  <!-- Includi lo script di reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Popup Cookie -->
+  <div class="cookie-popup" id="cookiePopup">
+    <button class="close-btn" id="closeBtn">&times;</button>
+    <p>Utilizziamo i cookie per garantirti la migliore esperienza sul nostro sito. Continuando a navigare, accetti l'uso dei cookie.</p>
+  </div>
+
+  <!-- Pulsante per aprire la popup -->
+  <button class="cookie-button" id="openCookieBtn">Mostra Cookie Policy</button>
+
+  <!-- Contatore visitatori -->
+  <div class="visitor-counter">
+    Visitatori Unici: <span id="uniqueVisitors">1000</span>
+  </div>
+
+  <div class="welcome-container">
+    <h1>Benvenuto!</h1>
+    <p>Siamo felici di averti qui. Esplora e scopri tutto ciò che abbiamo da offrire. Speriamo che la tua esperienza sia piacevole e memorabile.</p>
+    <!-- Widget reCAPTCHA -->
+    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onCaptchaSuccess"></div>
+    <!-- Pulsante disabilitato finché reCAPTCHA non è verificato -->
+    <a href="menu.html" class="cta-button" id="ctaButton" style="pointer-events: none; opacity: 0.5;">Scopri il Menu</a>
+  </div>
+  <div class="qr-container" id="qrContainer"></div>
+  <div class="info-box" id="infoBox"></div>
+
+  <!-- Includi la libreria QRCode.js -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script>
+    const qrContainer = document.getElementById('qrContainer');
+    const infoBox = document.getElementById('infoBox');
+    const ctaButton = document.getElementById('ctaButton');
+    const uniqueVisitorsSpan = document.getElementById('uniqueVisitors');
+    const cookiePopup = document.getElementById('cookiePopup');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeBtn');
+    const openCookieBtn = document.getElementById('openCookieBtn');
+
+    // Mostrà la popup cookie al caricamento della pagina
+    window.addEventListener('load', () => {
+      cookiePopup.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    // Definizione del numero di partenza (es. 1000)
+    let uniqueVisitors = 1000;
+
+    // Contatore visitatori
+    const visitorId = localStorage.getItem('visitorId');
+
+    if (!visitorId) {
+      // Se è un nuovo visitatore (visitorId non esiste), incrementa il contatore
+      uniqueVisitors += 1;
+      localStorage.setItem('uniqueVisitorsCounter', uniqueVisitors);
+      localStorage.setItem('visitorId', Date.now()); // Memorizza un ID unico per il visitatore
+    } else {
+      // Se il visitatore esiste già, recupera il valore salvato
+      uniqueVisitors = parseInt(localStorage.getItem('uniqueVisitorsCounter')) || 1000;
+    }
+
+    // Aggiorna il contatore nella pagina
+    uniqueVisitorsSpan.textContent = uniqueVisitors;
+
+    // Funzione per chiudere la popup cookie
+    function closeCookiePopup() {
+      cookiePopup.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    // Chiudi la popup cliccando sul pulsante X
+    closeBtn.addEventListener('click', closeCookiePopup);
+
+    // Chiudi la popup cliccando sull'overlay
+    overlay.addEventListener('click', closeCookiePopup);
+
+    // Funzione per aprire la popup cookie
+    function openCookiePopup() {
+      cookiePopup.classList.add('active');
+      overlay.classList.add('active');
+    }
+
+    // Apri la popup cliccando sul pulsante "Mostra Cookie Policy"
+    openCookieBtn.addEventListener('click', openCookiePopup);
+
+    // Funzione per aggiornare risoluzione e QR code
+    function updateInfo() {
+      const resolution = `${window.innerWidth} x ${window.innerHeight}`;
+      const browser = navigator.userAgent;
+      infoBox.textContent = `Risoluzione: ${resolution} | Browser: ${browser}`;
+
+      // Genera il QR code
+      qrContainer.innerHTML = ''; // Pulisci il contenitore
+      new QRCode(qrContainer, {
+        text: resolution,
+        width: 200,
+        height: 200,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    // Funzione chiamata quando reCAPTCHA è verificato
+    function onCaptchaSuccess() {
+      ctaButton.style.pointerEvents = 'auto';
+      ctaButton.style.opacity = '1';
+    }
+
+    // Ascolta il ridimensionamento della finestra
+    window.addEventListener('resize', updateInfo);
+    updateInfo(); // Aggiorna al caricamento della pagina
+  </script>
+</body>
+</html>

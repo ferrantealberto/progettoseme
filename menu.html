@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Alimenti</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 2.5em;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .accordion {
+            width: 100%;
+        }
+
+        .accordion-item {
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion-header {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            width: 100%;
+            text-align: left;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #ff4757;
+        }
+
+        .accordion-content {
+            padding: 0 15px;
+            background-color: #f9f9f9;
+            display: none;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .accordion-content li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .accordion-content li:last-child {
+            border-bottom: none;
+        }
+
+        .qr-code {
+            margin: 20px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Menu Alimenti</h1>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">Frutta</button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Mela</li>
+                        <li>Banana</li>
+                        <li>Arancia</li>
+                        <li>Fragola</li>
+                        <li>Kiwi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Verdura</button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Spinaci</li>
+                        <li>Carote</li>
+                        <li>Broccoli</li>
+                        <li>Pomodori</li>
+                        <li>Cetrioli</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Ortaggi</button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Patate</li>
+                        <li>Cipolle</li>
+                        <li>Aglio</li>
+                        <li>Zucchine</li>
+                        <li>Peperoni</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Cereali</button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Riso</li>
+                        <li>Grano</li>
+                        <li>Mais</li>
+                        <li>Avena</li>
+                        <li>Orzo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Latticini</button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Latte</li>
+                        <li>Formaggio</li>
+                        <li>Yogurt</li>
+                        <li>Burro</li>
+                        <li>Panna</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="qr-code">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://progettosemebis.netlify.app/menu" alt="QR Code">
+        </div>
+    </div>
+
+    <script>
+        const acc = document.getElementsByClassName("accordion-header");
+
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                let panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
